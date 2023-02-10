@@ -32,9 +32,9 @@ public class LoginRequest implements ISonarRequest {
 		SonarQubeApi api = SonarQubeApiFactory.get(SonarQubeApiEnum.LOGIN);
 
 		host.reset();
-		host.setApi(api.api);
+		host.setApi(api.getApi());
 		host.addParam("login", login).addParam("password", password);
 
-		return host.send(api.method);
+		return host.send(api.getMethod());
 	}
 }

@@ -15,7 +15,7 @@ public class LogoutRequest implements ISonarRequest {
 	public Response send(RequestHost host, Map<String, String> params) throws RequestFailedException {
 		SonarQubeApi api = SonarQubeApiFactory.get(SonarQubeApiEnum.LOGOUT);
 		host.clear();
-		host.setApi(api.api);
-		return host.send(api.method);
+		host.setApi(api.getApi());
+		return host.send(api.getMethod());
 	}
 }

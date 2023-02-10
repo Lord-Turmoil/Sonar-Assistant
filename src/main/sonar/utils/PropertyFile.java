@@ -2,8 +2,6 @@ package main.sonar.utils;
 
 import java.io.*;
 import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.util.Hashtable;
 import java.util.Map;
 import java.util.Properties;
 
@@ -16,7 +14,7 @@ public class PropertyFile {
 	 * @throws InvalidPropertyException
 	 * @throws IOException
 	 */
-	public void Load(Path path) throws InvalidPropertyException, IOException {
+	public void load(Path path) throws InvalidPropertyException, IOException {
 		File file = new File(path.toString());
 		FileInputStream input = null;
 		try {
@@ -39,7 +37,7 @@ public class PropertyFile {
 	 * @param path output file path
 	 * @throws IOException
 	 */
-	public void Save(Path path) throws IOException {
+	public void save(Path path) throws IOException {
 		try (BufferedWriter output = new BufferedWriter(new FileWriter(path.toString(), false))) {
 			for (Map.Entry<Object, Object> property : properties.entrySet()) {
 				output.write((String) property.getKey());

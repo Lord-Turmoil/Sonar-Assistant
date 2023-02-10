@@ -8,6 +8,8 @@ import okhttp3.Response;
 import java.io.IOException;
 
 public class ResponsePresenter {
+	private ResponsePresenter() {}
+
 	public static void show(Response response, String title) {
 		System.out.print("---------- ");
 		System.out.println(title);

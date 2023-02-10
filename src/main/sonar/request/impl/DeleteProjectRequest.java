@@ -32,10 +32,10 @@ public class DeleteProjectRequest implements ISonarRequest {
 		SonarQubeApi api= SonarQubeApiFactory.get(SonarQubeApiEnum.PROJECT_DELETE);
 
 		host.clear();
-		host.setApi(api.api);
+		host.setApi(api.getApi());
 		host.addParam("project", project);
 		host.setAuthorization(SonarGlobal.VISITOR_USERNAME, SonarGlobal.VISITOR_PASSWORD);
 
-		return host.send(api.method);
+		return host.send(api.getMethod());
 	}
 }

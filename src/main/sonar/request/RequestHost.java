@@ -31,7 +31,7 @@ public class RequestHost {
 	private OkHttpClient client;
 	private final HashMap<String, List<Cookie>> cookieStore = new HashMap<>();
 
-	private HashMap<String, String> parameters = new HashMap<>();;
+	private HashMap<String, String> parameters = new HashMap<>();
 	private HashMap<String, String> headers = new HashMap<>();
 	private String api;	// target request api
 	private String server;	// server url
@@ -63,7 +63,7 @@ public class RequestHost {
 			@Override
 			public List<Cookie> loadForRequest(HttpUrl httpUrl) {
 				List<Cookie> cookies = cookieStore.get(httpUrl.host());
-				return (cookies != null) ? cookies : new ArrayList<Cookie>();
+				return (cookies != null) ? cookies : new ArrayList<>();
 			}
 		});
 		builder.connectTimeout(CONNECT_TIMEOUT, TimeUnit.SECONDS)
@@ -199,6 +199,9 @@ public class RequestHost {
 		if (authorization != null) {
 			builder.addHeader("Authorization", authorization);
 		}
+
+		// add other header info
+		wrapHeaders(builder);
 
 		// sending air~ mail!
 		Response response = null;

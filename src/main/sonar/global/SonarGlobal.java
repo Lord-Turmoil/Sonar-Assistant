@@ -1,6 +1,8 @@
 package main.sonar.global;
 
 public class SonarGlobal {
+	private SonarGlobal() {}
+
 	public static final String VISITOR_USERNAME = "bot";
 	public static final String VISITOR_PASSWORD = "bot123456";
 

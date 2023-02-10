@@ -13,6 +13,8 @@ import java.util.Map;
  * Utility tool for JSON object.
  */
 public class JSONUtils {
+	private JSONUtils() {}
+
 	/**
 	 * Convert map to json string.
 	 * @param map keys and values

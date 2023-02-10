@@ -51,10 +51,10 @@ public class CreateProjectRequest implements ISonarRequest {
 
 		// This request can't succeed when logged in! Must log out first, or clear cookies.
 		host.reset();
-		host.setApi(api.api);
+		host.setApi(api.getApi());
 		host.addParam("name", name).addParam("project", project).addParam("visibility", visibility);
 		host.setAuthorization(SonarGlobal.VISITOR_USERNAME, SonarGlobal.VISITOR_PASSWORD);
 
-		return host.send(api.method);
+		return host.send(api.getMethod());
 	}
 }

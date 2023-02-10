@@ -12,10 +12,8 @@ public class PropertyFileTest {
 
 		System.out.println("----- Load");
 		try {
-			file.Load(Paths.get("res/sonar-project.properties"));
-		} catch (InvalidPropertyException e) {
-			e.printStackTrace();
-		} catch (IOException e) {
+			file.load(Paths.get("res/sonar-project.properties"));
+		} catch (InvalidPropertyException | IOException e) {
 			e.printStackTrace();
 		}
 
@@ -25,7 +23,7 @@ public class PropertyFileTest {
 
 		System.out.println("----- Save");
 		try {
-			file.Save(Paths.get("res/sonar.properties"));
+			file.save(Paths.get("res/sonar.properties"));
 		} catch (IOException e) {
 			e.printStackTrace();
 		}

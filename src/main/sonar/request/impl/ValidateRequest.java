@@ -15,7 +15,7 @@ public class ValidateRequest implements ISonarRequest {
 	public Response send(RequestHost host, Map<String, String> params) throws RequestFailedException {
 		SonarQubeApi api = SonarQubeApiFactory.get(SonarQubeApiEnum.VALIDATE);
 		host.clear();
-		host.setApi(api.api);
-		return host.send(api.method);
+		host.setApi(api.getApi());
+		return host.send(api.getMethod());
 	}
 }
