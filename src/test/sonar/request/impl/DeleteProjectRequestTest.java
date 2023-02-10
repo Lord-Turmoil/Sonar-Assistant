@@ -15,7 +15,7 @@ public class DeleteProjectRequestTest {
 
 		ISonarRequest request = new DeleteProjectRequest();
 		HashMap<String, String> params = new HashMap<>();
-		params.put("project", "bot-test");
+		params.put("project", "bot-test-2");
 		try {
 			ResponsePresenter.show(request.send(host, params), "----- delete project");
 		} catch (RequestFailedException e) {

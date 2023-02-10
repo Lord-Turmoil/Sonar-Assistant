@@ -137,7 +137,7 @@ public class RequestHost {
 	 * @return itself
 	 */
 	public RequestHost setAuthorization(String username, String password) {
-		authorization = Credentials.basic("username", "password");
+		authorization = Credentials.basic(username, password);
 		return this;
 	}
 

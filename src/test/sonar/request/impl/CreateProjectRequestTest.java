@@ -15,7 +15,7 @@ public class CreateProjectRequestTest {
 
 		ISonarRequest request = new CreateProjectRequest();
 		HashMap<String, String> params = new HashMap<>();
-		params.put("name", "bot-test");
+		params.put("name", "bot-test-2");
 		try {
 			ResponsePresenter.show(request.send(host, params), "----- create project");
 		} catch (RequestFailedException e) {
