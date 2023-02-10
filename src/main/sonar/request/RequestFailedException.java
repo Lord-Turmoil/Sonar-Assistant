@@ -1,7 +1,7 @@
 package main.sonar.request;
 
 public class RequestFailedException extends Exception {
-	RequestFailedException(String message) {
+	public RequestFailedException(String message) {
 		super(message);
 	}
 }

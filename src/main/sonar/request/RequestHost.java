@@ -6,16 +6,30 @@
 
 package main.sonar.request;
 
+import main.sonar.api.RequestMethodEnum;
 import okhttp3.*;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+/**
+ * Request host is an instance to make requests to one SonarQube server.
+ * It is recommended that one host deals with one server, since it stores
+ * the cookies during the request.
+ */
 public class RequestHost {
-	private static OkHttpClient client = new OkHttpClient();
+	public static final long CONNECT_TIMEOUT = 10;
+	public static final long READ_TIMEOUT = 60;
+	public static final long WRITE_TIMEOUT = 60;
+
+	private OkHttpClient client;
+	private final HashMap<String, List<Cookie>> cookieStore = new HashMap<>();
 
 	private HashMap<String, String> parameters = new HashMap<>();;
 	private HashMap<String, String> headers = new HashMap<>();
@@ -24,19 +38,42 @@ public class RequestHost {
 	private String authorization = null;	// authentication, Basic Auth
 
 	public RequestHost() {
+		initializeClient();
 	}
 
 	public RequestHost(String server) {
 		this.server = server;
+		initializeClient();
 	}
 
 	public RequestHost(String server, String api) {
 		this.server = server;
 		this.api = api;
+		initializeClient();
+	}
+
+	private void initializeClient() {
+		OkHttpClient.Builder builder = new OkHttpClient.Builder();
+		builder.cookieJar(new CookieJar() {
+			@Override
+			public void saveFromResponse(HttpUrl httpUrl, List<Cookie> list) {
+				cookieStore.put(httpUrl.host(), list);
+			}
+
+			@Override
+			public List<Cookie> loadForRequest(HttpUrl httpUrl) {
+				List<Cookie> cookies = cookieStore.get(httpUrl.host());
+				return (cookies != null) ? cookies : new ArrayList<Cookie>();
+			}
+		});
+		builder.connectTimeout(CONNECT_TIMEOUT, TimeUnit.SECONDS)
+				.readTimeout(READ_TIMEOUT, TimeUnit.SECONDS)
+				.writeTimeout(WRITE_TIMEOUT, TimeUnit.SECONDS);
+		client = builder.build();
 	}
 
 
-	//////////////////////////////////////// Basic setters
+	//////////////////////////////////////// Basic Setters
 
 	public RequestHost setApi(String api) {
 		this.api = api;
@@ -109,21 +146,47 @@ public class RequestHost {
 	}
 
 
+	//////////////////////////////////////// Cookies
+
+	public void clearCookies() {
+		cookieStore.clear();
+	}
+
 	//////////////////////////////////////// Top functions
+
+	/**
+	 * Reset everything except server and api. Use with caution.
+	 */
+	public void reset() {
+		clearParams();
+		clearHeaders();
+		clearCookies();
+		removeAuthorization();
+	}
+
+	/**
+	 * Clear unnecessary parameters and headers, and authorization.
+	 * Cookies are kept
+	 */
+	public void clear() {
+		clearParams();
+		clearHeaders();
+		removeAuthorization();
+	}
 
 	/**
 	 * Send request.
 	 * @return the server's response, null if anything bad happens
 	 */
-	public Response send(RequestMethod method) throws RequestFailedException {
+	public Response send(RequestMethodEnum method) throws RequestFailedException {
 		Request.Builder builder  = new Request.Builder();
 
 		// send method
-		if (method == RequestMethod.POST) {
+		if (method == RequestMethodEnum.POST) {
 			// SonarQube post do not have body
 			builder.post(RequestBody.create(null, ""));
 		}
-		else if (method == RequestMethod.GET) {
+		else if (method == RequestMethodEnum.GET) {
 			builder.get();
 		} else {
 			throw new RequestFailedException("Unknown send method.");

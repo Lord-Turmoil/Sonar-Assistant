@@ -2,7 +2,7 @@ package test.sonar.request;
 
 import main.sonar.request.RequestFailedException;
 import main.sonar.request.RequestHost;
-import main.sonar.request.RequestMethod;
+import main.sonar.api.RequestMethodEnum;
 import okhttp3.Response;
 
 import java.io.IOException;
@@ -21,7 +21,7 @@ public class RequestHostTest {
 		host.addParam("login", "visitor");
 		host.addParam("password", "password");
 		try {
-			response = host.send(RequestMethod.POST);
+			response = host.send(RequestMethodEnum.POST);
 		} catch (RequestFailedException e) {
 			e.printStackTrace();
 		}
@@ -33,7 +33,7 @@ public class RequestHostTest {
 		host.setApi("api/authentication/validate");
 		host.clearParams();
 		try {
-			response = host.send(RequestMethod.GET);
+			response = host.send(RequestMethodEnum.GET);
 		} catch (RequestFailedException e) {
 			e.printStackTrace();
 		}
