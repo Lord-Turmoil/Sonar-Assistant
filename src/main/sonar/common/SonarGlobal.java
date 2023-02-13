@@ -1,4 +1,4 @@
-package main.sonar.global;
+package main.sonar.common;
 
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -49,11 +49,19 @@ public class SonarGlobal {
 		return sonarServer;
 	}
 
-	public static final String VISITOR_LOGIN = "bot";
-	public static final String VISITOR_PASSWORD = "bot123456";
-
 	public static final String INVALID_PROPERTY = "";
 
+	//////////////////////////////////// SonarQube properties.
 	public static final String SONAR_ASSIST_PROPERTIES_FILE = "sonar-assist.properties";
-	public static final String SONAR_PROJECT_PROPERTIES_FILE = "sonar-project.properties";
+	public static final String SONAR_PROJECT_PROPERTIES_FILE = "sonar.properties";
+	public static final String SONAR_PROJECT_KEY = "sonar.projectKey";
+	public static final String SONAR_PROJECT_NAME = "sonar.projectName";
+	public static final String SONAR_VERSION = "sonar.version";
+	public static final String SONAR_SOURCE = "sonar.source";
+	public static final String SONAR_BINARY = "sonar.binary";
+	public static final String SONAR_LIBRARY = "sonar.library";
+	public static final String SONAR_LOGIN = "sonar.login";
+	public static final String SONAR_PASSWORD = "sonar.password";
+
+	public static final String SONAR_PROJECT_KEY_PREFIX = "bOt_";
 }

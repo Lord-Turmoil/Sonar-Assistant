@@ -4,6 +4,7 @@
 
 package main.sonar.request;
 
+import main.sonar.common.exceptions.RequestFailedException;
 import okhttp3.Response;
 
 import java.util.Map;

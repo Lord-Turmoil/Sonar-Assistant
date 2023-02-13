@@ -1,6 +1,6 @@
 package test.sonar.global;
 
-import main.sonar.global.SonarGlobal;
+import main.sonar.common.SonarGlobal;
 
 public class SonarGlobalTest {
 	private SonarGlobalTest() {}

@@ -3,10 +3,10 @@ package main.sonar.request.impl;
 import main.sonar.api.SonarQubeApi;
 import main.sonar.api.SonarQubeApiEnum;
 import main.sonar.api.SonarQubeApiFactory;
-import main.sonar.global.PropertyNotSetException;
-import main.sonar.global.SonarGlobal;
+import main.sonar.common.PropertyNotSetException;
+import main.sonar.common.SonarGlobal;
 import main.sonar.request.ISonarRequest;
-import main.sonar.request.RequestFailedException;
+import main.sonar.common.exceptions.RequestFailedException;
 import main.sonar.request.RequestHost;
 import okhttp3.Response;
 

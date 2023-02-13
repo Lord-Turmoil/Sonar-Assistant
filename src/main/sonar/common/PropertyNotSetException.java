@@ -1,4 +1,4 @@
-package main.sonar.global;
+package main.sonar.common;
 
 public class PropertyNotSetException extends Exception {
 	public PropertyNotSetException() {

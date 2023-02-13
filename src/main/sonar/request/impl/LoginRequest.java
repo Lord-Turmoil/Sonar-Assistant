@@ -4,7 +4,7 @@ import main.sonar.api.SonarQubeApi;
 import main.sonar.api.SonarQubeApiEnum;
 import main.sonar.api.SonarQubeApiFactory;
 import main.sonar.request.ISonarRequest;
-import main.sonar.request.RequestFailedException;
+import main.sonar.common.exceptions.RequestFailedException;
 import main.sonar.request.RequestHost;
 import okhttp3.Response;
 

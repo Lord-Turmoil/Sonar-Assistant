@@ -5,7 +5,6 @@
 package main.sonar.api;
 
 import java.util.EnumMap;
-import java.util.HashMap;
 
 public class SonarQubeApiFactory {
 	private static EnumMap<SonarQubeApiEnum, SonarQubeApi> apiCollection = new EnumMap<>(SonarQubeApiEnum.class);

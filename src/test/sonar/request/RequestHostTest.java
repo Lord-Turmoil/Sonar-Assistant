@@ -1,6 +1,6 @@
 package test.sonar.request;
 
-import main.sonar.request.RequestFailedException;
+import main.sonar.common.exceptions.RequestFailedException;
 import main.sonar.request.RequestHost;
 import main.sonar.api.RequestMethodEnum;
 import okhttp3.Response;

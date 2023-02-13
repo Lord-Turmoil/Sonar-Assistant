@@ -73,3 +73,5 @@ fabric.properties
 # Custom
 res/
 .scannerwork/
+sonar-assist.properties
+sonar.properties

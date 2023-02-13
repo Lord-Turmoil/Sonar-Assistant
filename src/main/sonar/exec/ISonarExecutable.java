@@ -8,6 +8,8 @@
 
 package main.sonar.exec;
 
+import main.sonar.common.exceptions.ExecutionFailedException;
+
 import java.util.Map;
 
 public interface ISonarExecutable {

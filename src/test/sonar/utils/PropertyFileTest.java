@@ -1,6 +1,5 @@
 package test.sonar.utils;
 
-import main.sonar.utils.InvalidPropertyException;
 import main.sonar.utils.PropertyFile;
 
 import java.io.IOException;

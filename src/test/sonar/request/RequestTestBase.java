@@ -1,17 +1,17 @@
 package test.sonar.request;
 
 import main.sonar.request.ISonarRequest;
-import main.sonar.request.RequestFailedException;
+import main.sonar.common.exceptions.RequestFailedException;
 import main.sonar.request.RequestHost;
 import main.sonar.utils.ResponsePresenter;
 
-import java.util.HashMap;
+import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class RequestTestBase {
-	protected static void send(RequestHost host, ISonarRequest request, HashMap<String, String> params, String title) {
-		System.out.print("----- ");
+	protected static void send(RequestHost host, ISonarRequest request, Map<String, String> params, String title) {
+		System.out.print("----- Request Test: ");
 		System.out.println(title);
 		try {
 			ResponsePresenter.show(request.send(host, params));

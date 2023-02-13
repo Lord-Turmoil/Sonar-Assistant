@@ -1,7 +1,7 @@
 package test.sonar.request.impl;
 
-import main.sonar.global.PropertyNotSetException;
-import main.sonar.global.SonarGlobal;
+import main.sonar.common.PropertyNotSetException;
+import main.sonar.common.SonarGlobal;
 import main.sonar.request.ISonarRequest;
 import main.sonar.request.RequestHost;
 import main.sonar.request.impl.DeleteProjectRequest;

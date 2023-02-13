@@ -7,6 +7,7 @@
 package main.sonar.request;
 
 import main.sonar.api.RequestMethodEnum;
+import main.sonar.common.exceptions.RequestFailedException;
 import okhttp3.*;
 
 import java.io.IOException;
