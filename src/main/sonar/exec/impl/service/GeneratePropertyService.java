@@ -1,6 +1,7 @@
-package main.sonar.exec.impl;
+package main.sonar.exec.impl.service;
 
 import main.sonar.common.exceptions.ExecutionFailedException;
+import main.sonar.common.exceptions.PropertyNotSetException;
 import main.sonar.exec.ISonarExecutable;
 import main.sonar.exec.ISonarExecutableFactory;
 import main.sonar.common.SonarGlobal;
@@ -18,15 +19,15 @@ import java.util.logging.Logger;
 /**
  * Update sonar-project.properties with sonar-assist.properties
  */
-public class UpdatePropertyService implements ISonarExecutable {
-	private UpdatePropertyService() {
+public class GeneratePropertyService implements ISonarExecutable {
+	private GeneratePropertyService() {
 	}
 
 	public static ISonarExecutableFactory getFactory() {
 		return new ISonarExecutableFactory() {
 			@Override
 			public ISonarExecutable create() {
-				return new UpdatePropertyService();
+				return new GeneratePropertyService();
 			}
 		};
 	}
@@ -38,16 +39,17 @@ public class UpdatePropertyService implements ISonarExecutable {
 			throw new ExecutionFailedException("Missing " + SonarGlobal.SONAR_ASSIST_PROPERTIES_FILE);
 		}
 
-		PropertyFile file = new PropertyFile();
+		PropertyFile assist = new PropertyFile();
+		PropertyFile sonar = new PropertyFile();
 
-		loadSonarProperties(file);
-		loadAssistProperties(file);
-		updateSonarProperties(file);
+		loadSonarProperties(sonar);
+		loadAssistProperties(assist);
+		updateSonarProperties(assist, sonar);
 	}
 
 	private void loadSonarProperties(PropertyFile file) {
 		try {
-			file.load(Paths.get(SonarGlobal.SONAR_PROJECT_PROPERTIES_FILE));
+			file.load(SonarGlobal.SONAR_PROJECT_PROPERTIES_FILE);
 		} catch (FileNotFoundException e) {
 			// Nothing to load.
 		} catch (IOException e) {
@@ -57,7 +59,7 @@ public class UpdatePropertyService implements ISonarExecutable {
 
 	private void loadAssistProperties(PropertyFile file) throws ExecutionFailedException {
 		try {
-			file.load(Paths.get(SonarGlobal.SONAR_ASSIST_PROPERTIES_FILE));
+			file.load(SonarGlobal.SONAR_ASSIST_PROPERTIES_FILE);
 		} catch (FileNotFoundException e) {
 			Logger.getGlobal().log(Level.SEVERE, "Missing {0}", SonarGlobal.SONAR_ASSIST_PROPERTIES_FILE);
 			throw new ExecutionFailedException("Missing " + SonarGlobal.SONAR_ASSIST_PROPERTIES_FILE);
@@ -67,35 +69,69 @@ public class UpdatePropertyService implements ISonarExecutable {
 		}
 	}
 
-	private void updateSonarProperties(PropertyFile file) throws ExecutionFailedException {
-		if (file.get(SonarGlobal.SONAR_PROJECT_KEY) == null) {
+	private void updateSonarProperties(PropertyFile src, PropertyFile dst) throws ExecutionFailedException {
+		if (dst.get(SonarGlobal.SONAR_PROJECT_KEY) == null) {
 			StringBuilder key = new StringBuilder(SonarGlobal.SONAR_PROJECT_KEY_PREFIX);
 			key.append(UUID.randomUUID().toString());
-			file.put(SonarGlobal.SONAR_PROJECT_KEY, key.toString());
+			dst.put(SonarGlobal.SONAR_PROJECT_KEY, key.toString());
 		}
 
 		/*
 			Remove password entry if it is not set, which means token is used.
 		 */
-		reduceProperty(file, SonarGlobal.SONAR_PASSWORD);
-		reduceProperty(file, SonarGlobal.SONAR_PROJECT_NAME);
-		reduceProperty(file, SonarGlobal.SONAR_SOURCE);
-		reduceProperty(file, SonarGlobal.SONAR_BINARY);
-		reduceProperty(file, SonarGlobal.SONAR_LIBRARY);
-		reduceProperty(file, SonarGlobal.SONAR_LOGIN);
-		reduceProperty(file, SonarGlobal.SONAR_PASSWORD);
+		copyProperty(src, dst, SonarGlobal.SONAR_PROJECT_NAME);
+		copyProperty(src, dst, SonarGlobal.SONAR_SOURCE);
+		copyProperty(src, dst, SonarGlobal.SONAR_BINARY);
+		copyProperty(src, dst, SonarGlobal.SONAR_LIBRARY);
+
+		updateLogin(dst);
 
 		try {
-			file.save(Paths.get(SonarGlobal.SONAR_PROJECT_PROPERTIES_FILE));
+			dst.save(SonarGlobal.SONAR_PROJECT_PROPERTIES_FILE);
 		} catch (IOException e) {
 			Logger.getGlobal().log(Level.SEVERE, "Failed to update {0}", SonarGlobal.SONAR_PROJECT_PROPERTIES_FILE);
 			throw new ExecutionFailedException("Failed to update " + SonarGlobal.SONAR_PROJECT_PROPERTIES_FILE);
 		}
 	}
 
-	private void reduceProperty(PropertyFile file, String property) {
-		if (SonarGlobal.INVALID_PROPERTY.equals(file.get(property))) {
-			file.remove(property);
+	private void updateLogin(PropertyFile file) {
+		String login = null;
+		String password = null;
+		try {
+			login = SonarGlobal.getSonarLogin();
+		} catch (PropertyNotSetException e) {
+			Logger.getGlobal().log(Level.INFO, "Missing login");
+		}
+		try {
+			password = SonarGlobal.getSonarPassword();
+		} catch (PropertyNotSetException e) {
+			Logger.getGlobal().log(Level.INFO, "Missing password");
+		}
+
+		if ((login != null) && (!SonarGlobal.INVALID_PROPERTY.equals(login))) {
+			file.put(SonarGlobal.SONAR_LOGIN, login);
+		}
+		if ((password != null) && (!SonarGlobal.INVALID_PROPERTY.equals(password))) {
+			file.put(SonarGlobal.SONAR_PASSWORD, password);
+		}
+	}
+
+	private void copyProperty(PropertyFile src, String srcKey, PropertyFile dst, String dstKey) {
+		String value = src.get(srcKey);
+		if ((value != null) && (!SonarGlobal.INVALID_PROPERTY.equals(value))) {
+			dst.put(dstKey, value);
+		} else {
+			dst.remove(dstKey);
+		}
+	}
+
+	private void copyProperty(PropertyFile src, PropertyFile dst, String key) {
+		String value = src.get(key);
+		if ((value != null) && (!SonarGlobal.INVALID_PROPERTY.equals(value))) {
+			// If value is null, put will do nothing.
+			dst.put(key, value);
+		} else {
+			dst.remove(key);
 		}
 	}
 }

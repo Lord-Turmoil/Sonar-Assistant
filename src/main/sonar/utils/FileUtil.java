@@ -1,9 +1,8 @@
 package main.sonar.utils;
 
-import java.nio.file.Files;
-import java.nio.file.InvalidPathException;
-import java.nio.file.LinkOption;
-import java.nio.file.Paths;
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.*;
 
 public class FileUtil {
 	private FileUtil() {}
@@ -32,5 +31,20 @@ public class FileUtil {
 		}
 
 		return Files.exists(Paths.get(dir), LinkOption.NOFOLLOW_LINKS);
+	}
+
+	public static boolean mkdirs(String dir) {
+		Path path = Paths.get(dir);
+		File file = new File(dir.toString());
+		if (file.exists()) {
+			return true;
+		}
+		try {
+			return file.mkdirs();
+		} catch (Exception e) {
+			e.printStackTrace();
+			System.out.println(e);
+			return false;
+		}
 	}
 }

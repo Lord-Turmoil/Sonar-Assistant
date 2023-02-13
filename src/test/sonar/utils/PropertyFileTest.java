@@ -3,7 +3,6 @@ package test.sonar.utils;
 import main.sonar.utils.PropertyFile;
 
 import java.io.IOException;
-import java.nio.file.Paths;
 
 public class PropertyFileTest {
 	public static void main(String[] args) {
@@ -11,7 +10,7 @@ public class PropertyFileTest {
 
 		System.out.println("----- Load");
 		try {
-			file.load(Paths.get("res/sonar-project.properties"));
+			file.load("res/sonar-project.properties");
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -22,14 +21,14 @@ public class PropertyFileTest {
 
 		System.out.println("----- Load");
 		try {
-			file.load(Paths.get("res/sonar.properties"));
+			file.load("res/sonar.properties");
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 
 		System.out.println("----- Save");
 		try {
-			file.save(Paths.get("res/mix.properties"));
+			file.save("res/mix.properties");
 		} catch (IOException e) {
 			e.printStackTrace();
 		}

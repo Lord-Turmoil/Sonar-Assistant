@@ -3,12 +3,12 @@ package main.sonar.request.impl;
 import main.sonar.api.SonarQubeApi;
 import main.sonar.api.SonarQubeApiEnum;
 import main.sonar.api.SonarQubeApiFactory;
-import main.sonar.common.PropertyNotSetException;
+import main.sonar.common.exceptions.PropertyNotSetException;
 import main.sonar.common.SonarGlobal;
 import main.sonar.request.ISonarRequest;
 import main.sonar.common.exceptions.RequestFailedException;
 import main.sonar.request.RequestHost;
-import okhttp3.Response;
+import main.sonar.request.SonarResponse;
 
 import java.util.Map;
 import java.util.logging.Level;
@@ -17,17 +17,17 @@ import java.util.logging.Logger;
 public class SearchProjectsRequest implements ISonarRequest {
 	/**
 	 * Search projects.
-	 * @param host host
+	 *
+	 * @param host   host
 	 * @param params projects -- comma-separated list of project keys
 	 *               q        -- limit search to projects contains given string
 	 *               ps       -- page size, range between [1, 500], 100 by default
 	 *               p        -- 1-based page
-	 *
 	 * @return
 	 * @throws RequestFailedException
 	 */
 	@Override
-	public Response send(RequestHost host, Map<String, String> params) throws RequestFailedException {
+	public SonarResponse send(RequestHost host, Map<String, String> params) throws RequestFailedException {
 		String projects = null;
 		String q = null;
 		String ps = null;
@@ -54,6 +54,6 @@ public class SearchProjectsRequest implements ISonarRequest {
 			throw new RequestFailedException("Authorization info missing");
 		}
 
-		return host.send(api.getMethod());
+		return new SonarResponse(host.send(api.getMethod()));
 	}
 }

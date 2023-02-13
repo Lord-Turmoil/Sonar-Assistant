@@ -1,5 +1,7 @@
 package main.sonar.common;
 
+import main.sonar.common.exceptions.PropertyNotSetException;
+
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -51,9 +53,12 @@ public class SonarGlobal {
 
 	public static final String INVALID_PROPERTY = "";
 
-	//////////////////////////////////// SonarQube properties.
-	public static final String SONAR_ASSIST_PROPERTIES_FILE = "sonar-assist.properties";
+	public static final String SONAR_ASSIST_DIR = "sonarassist/";
+	public static final String SONAR_ASSIST_PROPERTIES_FILE = SONAR_ASSIST_DIR + "sonar-assist.properties";
+	public static final String SONAR_ASSIST_CONFIG_FILE = SONAR_ASSIST_DIR + "sonar-config.properties";
 	public static final String SONAR_PROJECT_PROPERTIES_FILE = "sonar.properties";
+
+	//////////////////////////////////// SonarQube Properties
 	public static final String SONAR_PROJECT_KEY = "sonar.projectKey";
 	public static final String SONAR_PROJECT_NAME = "sonar.projectName";
 	public static final String SONAR_VERSION = "sonar.version";
@@ -63,5 +68,14 @@ public class SonarGlobal {
 	public static final String SONAR_LOGIN = "sonar.login";
 	public static final String SONAR_PASSWORD = "sonar.password";
 
+	//////////////////////////////////// Sonar Assist Configs
+	public static final String ASSIST_QUALITY_PROFILE = "assist.qualityProfile";
+	public static final String ASSIST_QUALITY_GATE = "assist.qualityGate";
+	public static final String ASSIST_SERVER = "assist.server";
+	public static final String ASSIST_LOGIN = "assist.login";
+	public static final String ASSIST_PASSWORD = "assist.password";
+
 	public static final String SONAR_PROJECT_KEY_PREFIX = "bOt_";
+
+
 }

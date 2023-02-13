@@ -1,6 +1,6 @@
 package test.sonar.request.impl;
 
-import main.sonar.common.PropertyNotSetException;
+import main.sonar.common.exceptions.PropertyNotSetException;
 import main.sonar.common.SonarGlobal;
 import main.sonar.request.ISonarRequest;
 import main.sonar.request.RequestHost;

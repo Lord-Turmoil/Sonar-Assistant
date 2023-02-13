@@ -3,7 +3,7 @@ package test.sonar.request;
 import main.sonar.request.ISonarRequest;
 import main.sonar.common.exceptions.RequestFailedException;
 import main.sonar.request.RequestHost;
-import main.sonar.utils.ResponsePresenter;
+import main.sonar.utils.ResponseUtil;
 
 import java.util.Map;
 import java.util.logging.Level;
@@ -14,7 +14,7 @@ public class RequestTestBase {
 		System.out.print("----- Request Test: ");
 		System.out.println(title);
 		try {
-			ResponsePresenter.show(request.send(host, params));
+			ResponseUtil.show(request.send(host, params));
 		} catch (RequestFailedException e) {
 			Logger.getGlobal().log(Level.SEVERE, e.toString());
 		}
