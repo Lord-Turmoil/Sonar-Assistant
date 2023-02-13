@@ -3,6 +3,7 @@ package main.sonar.request.impl;
 import main.sonar.api.SonarQubeApi;
 import main.sonar.api.SonarQubeApiEnum;
 import main.sonar.api.SonarQubeApiFactory;
+import main.sonar.global.PropertyNotSetException;
 import main.sonar.global.SonarGlobal;
 import main.sonar.request.ISonarRequest;
 import main.sonar.request.RequestFailedException;
@@ -53,7 +54,12 @@ public class CreateProjectRequest implements ISonarRequest {
 		host.reset();
 		host.setApi(api.getApi());
 		host.addParam("name", name).addParam("project", project).addParam("visibility", visibility);
-		host.setAuthorization(SonarGlobal.VISITOR_LOGIN, SonarGlobal.VISITOR_PASSWORD);
+		try {
+			host.setAuthorization(SonarGlobal.getSonarLogin(), SonarGlobal.getSonarPassword());
+		} catch (PropertyNotSetException e) {
+			Logger.getGlobal().log(Level.SEVERE, "Did you forget to set login and password?");
+			throw new RequestFailedException("Authorization info missing");
+		}
 
 		return host.send(api.getMethod());
 	}

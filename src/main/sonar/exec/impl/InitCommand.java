@@ -33,10 +33,13 @@ public class InitCommand implements ISonarExecutable {
 	/**
 	 *
 	 * @param params optional parameters.
-	 *               project -- sonar.projectName and sonar.projectKey
-	 *               src     -- sonar.sources
-	 *               bin     -- sonar.java.binaries
-	 *               lib     -- sonar.java.libraries
+	 *               assist.login    -- sonar.login
+	 *               assist.password -- sonar.password
+	 *               assist.project  -- sonar.projectName and sonar.projectKey
+	 *               sonar.bin     -- sonar.java.binaries
+	 *               sonar.lib     -- sonar.java.libraries
+	 *               sonar.src     -- sonar.sources
+	 *
 	 * @throws ExecutionFailedException
 	 */
 	@Override

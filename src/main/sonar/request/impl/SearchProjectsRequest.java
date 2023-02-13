@@ -3,6 +3,7 @@ package main.sonar.request.impl;
 import main.sonar.api.SonarQubeApi;
 import main.sonar.api.SonarQubeApiEnum;
 import main.sonar.api.SonarQubeApiFactory;
+import main.sonar.global.PropertyNotSetException;
 import main.sonar.global.SonarGlobal;
 import main.sonar.request.ISonarRequest;
 import main.sonar.request.RequestFailedException;
@@ -10,6 +11,8 @@ import main.sonar.request.RequestHost;
 import okhttp3.Response;
 
 import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class SearchProjectsRequest implements ISonarRequest {
 	/**
@@ -44,7 +47,12 @@ public class SearchProjectsRequest implements ISonarRequest {
 				.addParam("q", q)
 				.addParam("ps", ps)
 				.addParam("p", p);
-		host.setAuthorization(SonarGlobal.ADMIN_LOGIN, SonarGlobal.ADMIN_PASSWORD);
+		try {
+			host.setAuthorization(SonarGlobal.getSonarLogin(), SonarGlobal.getSonarPassword());
+		} catch (PropertyNotSetException e) {
+			Logger.getGlobal().log(Level.SEVERE, "Did you forget to set login and password?");
+			throw new RequestFailedException("Authorization info missing");
+		}
 
 		return host.send(api.getMethod());
 	}
